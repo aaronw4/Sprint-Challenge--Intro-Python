@@ -1,6 +1,12 @@
 # Create a class to hold a city location. Call the class "City". It should have
 # fields for name, lat and lon (representing latitude and longitude).
-
+class City:
+  def __init__(self, name, lat, lon):
+    self.name = name
+    self.lat = lat
+    self.lon = lon
+  def __str__(self):
+    return f'City({self.name}, {self.lat}, {self.lon})'
 
 # We have a collection of US cities with population over 750,000 stored in the
 # file "cities.csv". (CSV stands for "comma-separated values".)
@@ -15,13 +21,21 @@
 # Note that the first line of the CSV is header that describes the fields--this
 # should not be loaded into a City object.
 cities = []
+import csv
 
 def cityreader(cities=[]):
+  with open('C:/Users/aaron/Google Drive (aaronrw4@yahoo.com)/Git/Sprint-Challenge--Intro-Python/src/cityreader/cities.csv') as csvfile:
+    reader = csv.reader(csvfile)
+    next(reader)
+    for row in reader:
+      name = row[0]
+      lat = row[3]
+      lon = row[4]
+      cities.append(City(name, float(lat), float(lon)))
   # TODO Implement the functionality to read from the 'cities.csv' file
   # Ensure that the lat and lon valuse are all floats
   # For each city record, create a new City instance and add it to the 
-  # `cities` list
-    
+  # `cities` list 
     return cities
 
 cityreader(cities)
@@ -60,12 +74,32 @@ for c in cities:
 # Salt Lake City: (40.7774,-111.9301)
 
 # TODO Get latitude and longitude values from the user
+choice1 = input('Enter lat1,lon1:')
+choice1Split = choice1.split(',')
+lat1 = int(choice1Split[0])
+lon1 = int(choice1Split[1])
+choice2 = input('Enter lat2,lon2:')
+choice2Split = choice2.split(',')
+lat2 = int(choice2Split[0])
+lon2 = int(choice2Split[1])
+
 
 def cityreader_stretch(lat1, lon1, lat2, lon2, cities=[]):
   # within will hold the cities that fall within the specified region
+  
   within = []
   
   # Go through each city and check to see if it falls within 
   # the specified coordinates.
+  for x in cities:
+    if lat1 > x.lat > lat2 and lon1 > x.lon > lon2:
+      within.append(x)
 
   return within
+  
+for x in cityreader_stretch(lat1, lon1, lat2, lon2, cities):
+  print(f'{x.name}: ({x.lat},{x.lon})')
+
+# for x in within:
+#     print(f'{x.name}: ({x.lat},{x.lon})')
+
